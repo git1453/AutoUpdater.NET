@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 using AutoUpdaterDotNET.Properties;
+//using Newtonsoft.Json;
 
 namespace AutoUpdaterDotNET
 {

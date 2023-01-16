@@ -25,6 +25,8 @@ namespace AutoUpdaterTest
         private void FormMain_Load(object sender, EventArgs e)
         {
             //Uncomment below lines to handle parsing logic of non XML AppCast file.
+           AutoUpdater.DownloadPath =Path.Combine( Application.StartupPath,"UpdateFile");
+            AutoUpdater.InstallationPath=Application.StartupPath;
 
             //AutoUpdater.ParseUpdateInfoEvent += AutoUpdaterOnParseUpdateInfoEvent;
             //AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.json");
@@ -66,7 +68,6 @@ namespace AutoUpdaterTest
             //Want to handle how your application will exit when application finished downloading then uncomment below line.
 
             AutoUpdater.ApplicationExitEvent += AutoUpdater_ApplicationExitEvent;
-
             //Want to handle update logic yourself then uncomment below line.
 
             //AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
@@ -126,8 +127,12 @@ namespace AutoUpdaterTest
 
             //Uncomment following line if you want to clear application directory before update zip is extracted.
             //AutoUpdater.ClearAppDirectory = true;
-
-            //AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.xml");
+            //配置更新设置存储，默认写入注册表
+            string jsonPath = Path.Combine(Environment.CurrentDirectory, "settings.json");
+            if(!File.Exists(jsonPath))
+                File.Create(jsonPath).Close();
+            AutoUpdater.PersistenceProvider = new JsonFilePersistenceProvider(jsonPath);
+            AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.xml");
 
             MessageBox.Show(string.Join(Environment.NewLine, Environment.GetCommandLineArgs()));
         }
